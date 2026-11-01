@@ -33,3 +33,11 @@ OBSERVAÇÃO
 ```
 
 Se uma fonte falhar, a seção antiga fica e ganha a nota "(sem atualização às HHhMM: <conector> não respondeu)".
+
+## Rede de segurança das conversas (desde 01/11, 16h)
+
+A cada rodada, a tarefa também lê as conversas de voz desde a rodada anterior. Se o Artur pediu uma ação e a ferramenta `anotar_pedido` não gravou (não foi chamada ou deu erro), a própria tarefa insere o pedido na fila, sem duplicar o mesmo `conversa_id`. Erros do Staff (número errado, regra quebrada) viram uma linha "Ajuste no Staff" na mensagem de aprovação.
+
+## Recuperação no painel
+
+O painel passa a mostrar abandonos de checkout de clientes no dia e quantos pagaram depois pelo link de recuperação da Stripe (`recovered_from`). Nomes e e-mails de clientes não entram no painel; a lista fica no `/admin/black`.
