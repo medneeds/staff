@@ -6,20 +6,62 @@
   "llm": "claude-sonnet-5-5",
   "timezone": "America/Fortaleza",
   "voice": {
-    "current": { "name": "Brian", "voice_id": "nPczCjzI2devNBz1zQrb", "note": "provisória, multilíngue" },
-    "target": { "name": "Kpelo - Natural e Calmo", "voice_id": "8BWp4523yEDDjOJi73mz", "note": "biblioteca; precisa estar em My Voices" },
+    "current": {
+      "name": "Brian",
+      "voice_id": "nPczCjzI2devNBz1zQrb",
+      "note": "provisória, multilíngue"
+    },
+    "target": {
+      "name": "Kpelo - Natural e Calmo",
+      "voice_id": "8BWp4523yEDDjOJi73mz",
+      "note": "biblioteca; precisa estar em My Voices"
+    },
     "alternatives": [
-      { "name": "Cirilo", "voice_id": "1DXriIY2zhyCt1cj8onn" },
-      { "name": "Rodrigo Martins", "voice_id": "COFCMLZawPyl2lHOgt6M" }
+      {
+        "name": "Cirilo",
+        "voice_id": "1DXriIY2zhyCt1cj8onn"
+      },
+      {
+        "name": "Rodrigo Martins",
+        "voice_id": "COFCMLZawPyl2lHOgt6M"
+      }
     ]
   },
   "first_message": "Fala, Artur. Staff na escuta. Quer o resumo da Black de hoje ou tem outra coisa no radar?",
   "knowledge_base": {
-    "panel": { "name_pattern": "Painel do Staff (atualizado em DD/MM HHhMM)", "usage_mode": "prompt", "rotates": true }
+    "panel": {
+      "name_pattern": "Painel do Staff (atualizado em DD/MM HHhMM)",
+      "usage_mode": "prompt",
+      "rotates": true
+    }
   },
   "scheduled_tasks": {
-    "panel_refresh": { "id": "trig_01LBDoNo6GVTHpLvQAQVRNav", "cron": "CRON_TZ=America/Fortaleza 52 9,15,21 * 11 *" },
-    "daily_traffic_report": { "id": "trig_01F8D5HoTjE5kx73MDy4DVMs", "cron": "CRON_TZ=America/Fortaleza 41 7 * 11 *" }
+    "panel_refresh": {
+      "id": "trig_01SV1XUyqDF5HxTEDmLZq5eR",
+      "name": "Staff: painel e pedidos (Black MedStation)",
+      "cron": "CRON_TZ=America/Fortaleza 52 9,15,21 * 11 *"
+    },
+    "daily_traffic_report": {
+      "id": "trig_01F8D5HoTjE5kx73MDy4DVMs",
+      "cron": "CRON_TZ=America/Fortaleza 41 7 * 11 *"
+    }
   },
-  "tags": ["Staff", "MedStation", "Jarvis"]
+  "tags": [
+    "Staff",
+    "MedStation",
+    "Jarvis"
+  ],
+  "tools": {
+    "anotar_pedido": {
+      "tool_id": "tool_5601m6c5gy3he4b9thq4fpzmehfg",
+      "type": "webhook",
+      "target": "supabase staff_requests (insert only)"
+    }
+  },
+  "supabase": {
+    "project": "staff",
+    "project_id": "gjsztlroobvohpqsvlkg",
+    "region": "sa-east-1",
+    "note": "o agente usa só a chave publicável; RLS permite apenas inserir pedidos novos"
+  }
 }

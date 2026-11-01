@@ -7,10 +7,10 @@
 - Painel do Staff na base de conhecimento, atualizado 3x ao dia por tarefa agendada (Stripe + Meta).
 - Cérebro trocado para Claude.
 
-## Fase 2 — Pedidos anotados (próxima)
+## Fase 2 — Pedidos anotados (01/11, feito)
 - Ferramenta do agente `anotar_pedido`: quando o Artur pede uma ação por voz, o Staff grava o pedido (o quê, quando, urgência) numa fila.
 - A rotina das 9h52/15h52/21h52 lê a fila, prepara a ação e manda ao Artur para aprovação no celular. Nada é executado sem "sim".
-- Fila: tabela `staff_requests` num projeto Supabase próprio do Staff (plano gratuito), exposta por uma edge function com segredo de webhook guardado no ElevenLabs.
+- Fila: tabela `staff_requests` no projeto Supabase `staff` (gratuito). O agente grava direto pela API REST com a chave publicável; a RLS só permite inserir pedidos novos, então a chave não dá leitura nem aprovação.
 
 ## Fase 3 — Times com mandato
 - Tráfego: já existe (relatório 7h41). Ganha mandato para pausar anúncio individual dentro das regras.
