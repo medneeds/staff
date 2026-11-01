@@ -12,6 +12,12 @@
 - A rotina das 9h52/15h52/21h52 lê a fila, prepara a ação e manda ao Artur para aprovação no celular. Nada é executado sem "sim".
 - Fila: tabela `staff_requests` no projeto Supabase `staff` (gratuito). O agente grava direto pela API REST com a chave publicável; a RLS só permite inserir pedidos novos, então a chave não dá leitura nem aprovação.
 
+## Fase 2.5 — Fila rápida, andamento e tarefas (01/11, feito)
+- Fila lida de hora em hora (8h às 23h), separada do painel.
+- Ferramenta `consultar_pedidos`: o Artur pergunta por voz como estão os pedidos.
+- Cada pedido vira tarefa no ClickUp (lista "Staff · Pedidos", espaço TI), com o link na mensagem de aprovação.
+- Memória do Staff: documento fixo com decisões e combinados, atualizado quando algo muda.
+
 ## Fase 3 — Times com mandato
 - Tráfego: já existe (relatório 7h41). Ganha mandato para pausar anúncio individual dentro das regras.
 - Recuperação: e-mails 1 h e 24 h (repositório medstation) + lista de WhatsApp para o Artur.

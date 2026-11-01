@@ -33,13 +33,23 @@
       "name_pattern": "Painel do Staff (atualizado em DD/MM HHhMM)",
       "usage_mode": "prompt",
       "rotates": true
+    },
+    "memory": {
+      "name": "Memória do Staff (decisões e combinados)",
+      "usage_mode": "prompt",
+      "rotates": "quando uma decisão muda"
     }
   },
   "scheduled_tasks": {
-    "panel_refresh": {
+    "panel_and_memory": {
       "id": "trig_01SV1XUyqDF5HxTEDmLZq5eR",
-      "name": "Staff: painel e pedidos (Black MedStation)",
+      "name": "Staff: painel e memória (Black MedStation)",
       "cron": "CRON_TZ=America/Fortaleza 52 9,15,21 * 11 *"
+    },
+    "queue_hourly": {
+      "id": "trig_01QFxtZXS4HzyLAnppoup8rk",
+      "name": "Staff: fila de pedidos (de hora em hora)",
+      "cron": "CRON_TZ=America/Fortaleza 22 8-23 * * *"
     },
     "daily_traffic_report": {
       "id": "trig_01F8D5HoTjE5kx73MDy4DVMs",
@@ -55,7 +65,12 @@
     "anotar_pedido": {
       "tool_id": "tool_5601m6c5gy3he4b9thq4fpzmehfg",
       "type": "webhook",
-      "target": "supabase staff_requests (insert only)"
+      "target": "POST /rest/v1/staff_requests (só insere)"
+    },
+    "consultar_pedidos": {
+      "tool_id": "tool_5901m6c9wgjxeea958djqccg0ha9",
+      "type": "webhook",
+      "target": "POST /rest/v1/rpc/staff_status (resumo dos últimos pedidos)"
     }
   },
   "supabase": {
@@ -63,5 +78,15 @@
     "project_id": "gjsztlroobvohpqsvlkg",
     "region": "sa-east-1",
     "note": "o agente usa só a chave publicável; RLS permite apenas inserir pedidos novos"
+  },
+  "clickup": {
+    "workspace_id": "90132923802",
+    "space": "TI",
+    "list": "Staff · Pedidos",
+    "list_id": "1400450000013627",
+    "statuses": [
+      "to do",
+      "complete"
+    ]
   }
 }
