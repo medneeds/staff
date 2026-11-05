@@ -91,11 +91,24 @@ function Reator({ convRef, estado, tamanho = 320 }) {
       ctx.fillStyle = nucleo
       ctx.beginPath(); ctx.arc(c, c, Rn, 0, Math.PI * 2); ctx.fill()
 
-      // marca K no centro
-      ctx.fillStyle = 'rgba(31,42,28,0.85)'
-      ctx.font = `600 ${Math.round(Rn * 0.9)}px Georgia, serif`
-      ctx.textAlign = 'center'; ctx.textBaseline = 'middle'
-      ctx.fillText('K', c, c + Rn * 0.04)
+      // filamentos abstratos girando dentro do núcleo (sem letra)
+      ctx.save()
+      ctx.beginPath(); ctx.arc(c, c, Rn * 0.96, 0, Math.PI * 2); ctx.clip()
+      ctx.globalCompositeOperation = 'lighter'
+      for (let k = 0; k < 4; k++) {
+        const ang = t * (0.5 + k * 0.23) * (k % 2 ? -1 : 1) * (1 + L * 2)
+        const rx = Rn * (0.78 - k * 0.1) * (1 + L * 0.15 * Math.sin(t * 3 + k))
+        const ry = Rn * (0.22 + 0.06 * k)
+        ctx.strokeStyle = `rgba(255,246,220,${0.22 + L * 0.3})`
+        ctx.lineWidth = 1.2 + L * 1.5
+        ctx.beginPath(); ctx.ellipse(c, c, rx, ry, ang, 0, Math.PI * 2); ctx.stroke()
+      }
+      const brilho = ctx.createRadialGradient(c, c, 0, c, c, Rn * (0.35 + L * 0.2))
+      brilho.addColorStop(0, 'rgba(255,255,245,0.95)')
+      brilho.addColorStop(1, 'rgba(255,240,200,0)')
+      ctx.fillStyle = brilho
+      ctx.beginPath(); ctx.arc(c, c, Rn * 0.6, 0, Math.PI * 2); ctx.fill()
+      ctx.restore()
 
       raf = requestAnimationFrame(quadro)
     }
