@@ -16,7 +16,7 @@ O ElevenLabs não edita o texto de um documento existente, então cada atualiza�
 |---|---|---|
 | Vendas da Black | Stripe: payment intents `succeeded` com `metadata.offer = black_2026` | 9h52, 15h52, 21h52 |
 | Checkouts de clientes hoje | Stripe: checkout sessions do dia, `offer = black_2026`, sem os testes do Artur | 9h52, 15h52, 21h52 |
-| Tráfego pago | Adspirer `get_meta_campaign_performance` (dados consolidados, um dia de atraso) | só 9h52 (cota do plano) |
+| Tráfego pago | API oficial do Meta (`/act_779483745915168/insights`, por campanha: 7 dias e hoje) | 9h52, 15h52, 21h52 |
 | Recuperação, conteúdo, pendências | reaproveitado do painel anterior; atualizado à mão quando algo muda | quando muda |
 
 ## Formato

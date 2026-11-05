@@ -33,7 +33,7 @@ Artur (voz) ──► ElevenLabs Agent "Staff" ──► Claude (LLM)
         Painel do Staff + Memória do Staff
                        ▲
                        │ 9h52 · 15h52 · 21h52
-   Tarefa "painel e memória" ──► Stripe · Adspirer/Meta · fila · conversas
+   Tarefa "painel e memória" ──► Stripe · Meta (API oficial) · fila · conversas
 
    Tarefa "fila" (de hora em hora) ──► staff_requests ──► ClickUp "Staff · Pedidos"
                                                       └─► Artur aprova no celular ──► execução
