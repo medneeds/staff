@@ -1,0 +1,12 @@
+{
+  "mcpServers": {
+    "kairos": {
+      "type": "http",
+      "url": "https://gjsztlroobvohpqsvlkg.supabase.co/functions/v1/kairos",
+      "headers": {
+        "Authorization": "Bearer ${KAIROS_KEY}",
+        "X-Kairos-Porta": "claude-code"
+      }
+    }
+  }
+}
