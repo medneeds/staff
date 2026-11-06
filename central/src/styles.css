@@ -207,3 +207,11 @@ input:focus, select:focus, textarea:focus { outline: 2px solid var(--ouro); outl
 .voz-enviar { width: 46px; height: 46px; border-radius: 50%; border: 0; background: var(--ouro); color: var(--musgo-9); font-size: 1.1rem; cursor: pointer; }
 .voz-enviar:disabled { opacity: .35; }
 .hero-data::first-letter { text-transform: uppercase; }
+.passos { margin: 14px 0 10px; padding-left: 20px; font-size: .92rem; color: var(--musgo-7); }
+.passos li { margin: 4px 0; }
+.qr { display: block; width: 200px; height: 200px; margin: 8px auto; background: #fff; border-radius: 12px; padding: 8px; border: 1px solid var(--papel-2); }
+.qr-vazio { display: grid; place-items: center; color: var(--musgo-7); }
+.segredo { text-align: center; margin: 4px 0 0; font-size: .78rem; color: var(--musgo-7); }
+.segredo span { display: block; }
+.segredo code { font-size: .8rem; word-break: break-all; color: var(--tinta); }
+.codigo { text-align: center; font-size: 1.6rem; letter-spacing: .3em; font-variant-numeric: tabular-nums; }

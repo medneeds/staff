@@ -2,6 +2,7 @@ import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { ConversationProvider } from '@elevenlabs/react'
 import { sb } from './supabase.js'
 import Voz, { ReatorMini } from './Voz.jsx'
+import { SegundoFator, verificarNivel, useBloqueioPorInatividade } from './Seguranca.jsx'
 
 const TZ = 'America/Fortaleza'
 const fmt = (iso, opts) => (iso ? new Date(iso).toLocaleString('pt-BR', { timeZone: TZ, ...opts }) : '')
@@ -56,7 +57,7 @@ function Login() {
   const [ocupado, setOcupado] = useState(false)
   async function pedir(e) {
     e.preventDefault(); setErro(''); setOcupado(true)
-    const { error } = await sb.auth.signInWithOtp({ email: email.trim().toLowerCase(), options: { emailRedirectTo: window.location.origin, shouldCreateUser: true } })
+    const { error } = await sb.auth.signInWithOtp({ email: email.trim().toLowerCase(), options: { emailRedirectTo: window.location.origin, shouldCreateUser: false } })
     setOcupado(false)
     if (error) setErro('Não consegui enviar o acesso agora. Tente de novo em alguns minutos.')
     else setEnviado(true)
@@ -380,7 +381,7 @@ const ABAS = [['hoje', 'Hoje'], ['pedidos', 'Pedidos'], ['falar', 'Falar'], ['pr
 
 export default function App() {
   const [sessao, setSessao] = useState(undefined)
-  const [admin, setAdmin] = useState(null)
+  const [nivel, setNivel] = useState('checando')
   const [aba, setAba] = useState(() => { const h = location.hash.slice(1); return ABAS.some((a) => a[0] === h) ? h : 'hoje' })
   const [painel, setPainel] = useState(null)
   const [pedidos, setPedidos] = useState([])
@@ -395,6 +396,13 @@ export default function App() {
     return () => sub.subscription.unsubscribe()
   }, [])
 
+  const conferir = useCallback(async () => {
+    setNivel('checando')
+    try { setNivel(await verificarNivel()) } catch { setNivel('desafio') }
+  }, [])
+  useEffect(() => { if (sessao) conferir(); else setNivel('checando') }, [sessao?.user?.id, conferir])
+  useBloqueioPorInatividade(!!sessao, 30)
+
   const carregar = useCallback(async () => {
     const [a, b, c, d, e, f] = await Promise.all([
       sb.rpc('staff_e_admin'),
@@ -404,13 +412,13 @@ export default function App() {
       sb.from('staff_projetos').select('*').order('ordem'),
       sb.from('staff_checklist').select('*').order('ordem').order('id'),
     ])
-    setAdmin(!!a.data)
+    if (!a.data) { setNivel('desafio'); return }
     setPainel(b.data?.[0] || null)
     setPedidos(c.data || []); setPosts(d.data || []); setProjetos(e.data || []); setChecklist(f.data || [])
   }, [])
 
   useEffect(() => {
-    if (!sessao) return
+    if (!sessao || nivel !== 'ok') return
     carregar()
     const t = setInterval(carregar, 60000)
     const ch = sb.channel('central')
@@ -419,7 +427,7 @@ export default function App() {
       .on('postgres_changes', { event: '*', schema: 'public', table: 'staff_checklist' }, carregar)
       .subscribe()
     return () => { clearInterval(t); sb.removeChannel(ch) }
-  }, [sessao, carregar])
+  }, [sessao, nivel, carregar])
 
   useEffect(() => { history.replaceState(null, '', `#${aba}`); window.scrollTo(0, 0) }, [aba])
 
@@ -427,9 +435,11 @@ export default function App() {
 
   if (sessao === undefined) return <div className="carregando"><span className="k">K</span></div>
   if (!sessao) return <Login />
-  if (admin === false) return (
+  if (nivel === 'checando') return <div className="carregando"><span className="k">K</span></div>
+  if (nivel === 'nao_dono') return (
     <div className="login"><div className="login-card"><h1>Acesso restrito</h1><p className="sub">Este e-mail não tem acesso à Central do Staff.</p><button className="btn" onClick={() => sb.auth.signOut()}>Sair</button></div></div>
   )
+  if (nivel === 'cadastrar' || nivel === 'desafio') return <SegundoFator modo={nivel} aoConcluir={conferir} />
 
   const pend = pedidos.filter((p) => p.status === 'enviado').length + posts.filter((p) => p.status === 'aguardando_aprovacao').length
 

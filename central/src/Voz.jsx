@@ -158,7 +158,11 @@ export default function Voz({ aoAnotar }) {
     if (status === 'connected' || status === 'connecting') { conv.endSession(); return }
     try {
       await navigator.mediaDevices.getUserMedia({ audio: true })
-      conv.startSession({ agentId: AGENT_ID, connectionType: 'websocket' })
+      // Link assinado e temporário, emitido só para o Artur com 2º fator.
+      const { data, error } = await sb.functions.invoke('kairos-voz', { method: 'POST' })
+      if (data?.signedUrl) conv.startSession({ signedUrl: data.signedUrl, connectionType: 'websocket' })
+      else if (data?.erro === 'voz_nao_configurada' || error?.context?.status === 503) conv.startSession({ agentId: AGENT_ID, connectionType: 'websocket' })
+      else { setErro('Acesso à voz negado. Entre de novo na Central.'); return }
     } catch {
       setErro('Preciso do microfone. Libere o acesso no navegador e toque de novo.')
     }
